@@ -22,21 +22,20 @@
     }
 
     .container {
-      margin-top: 40px;
+      margin-top: 60px;
     }
 
-    .card, .video-box {
+    .card {
       background: #111;
-      padding: 25px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 700px;
-      margin: 20px auto;
-      box-shadow: 0 0 20px rgba(255, 77, 166, 0.5);
+      padding: 30px;
+      border-radius: 25px;
+      width: 320px;
+      margin: auto;
+      box-shadow: 0 0 25px rgba(255, 77, 166, 0.5);
     }
 
     .price {
-      font-size: 34px;
+      font-size: 36px;
       color: #ff4da6;
       font-weight: bold;
       margin: 15px 0;
@@ -45,46 +44,39 @@
     button {
       background: #ff4da6;
       border: none;
-      padding: 14px 25px;
+      padding: 15px 30px;
       color: white;
-      border-radius: 25px;
+      border-radius: 30px;
       cursor: pointer;
-      margin-top: 10px;
       font-size: 16px;
+      font-weight: bold;
       transition: 0.3s;
+      box-shadow: 0 0 15px rgba(255,77,166,0.6);
     }
 
     button:hover {
       background: #ff1a8c;
-      transform: scale(1.05);
+      transform: scale(1.07);
+    }
+
+    .videos {
+      margin-top: 40px;
+    }
+
+    .video-box {
+      background: #111;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 700px;
+      box-shadow: 0 0 20px rgba(255,77,166,0.4);
     }
 
     video {
       width: 100%;
       border-radius: 15px;
       background: #000;
-      box-shadow: 0 0 15px rgba(255,77,166,0.4);
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    .aviso {
-      margin-top: 15px;
-      padding: 10px;
-      border-radius: 10px;
-      background: rgba(255, 77, 166, 0.1);
-      border: 1px solid #ff4da6;
-      font-size: 14px;
-    }
-
-    input {
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      width: 85%;
-      margin-top: 10px;
     }
 
     h3 {
@@ -99,106 +91,36 @@
 <div class="container">
 
   <div class="card">
-    <h2>Comprar Acesso</h2>
-    <p>💳 Pix: <b>SUA-CHAVE-PIX</b></p>
+    <h2>Acesso Premium</h2>
+    <p>Conteúdo exclusivo liberado após pagamento</p>
+
     <div class="price">R$ 19,99</div>
 
-    <p>Após pagar, digite seu email abaixo</p>
-    <input id="email" placeholder="Digite seu email">
-
-    <br>
-    <button onclick="solicitar()">Já paguei</button>
-    <button onclick="entrar()">Entrar</button>
-
-    <div class="aviso">
-      ⏳ Após o pagamento, o acesso pode levar até <b>1 hora</b> para ser liberado.
-    </div>
+    <a href="https://pay.kiwify.com.br/zog76UM" target="_blank">
+      <button>🔥 Comprar Agora 🔥</button>
+    </a>
   </div>
 
-  <div id="conteudo" class="hidden">
-    <h2>🎉 Área Premium</h2>
+  <div class="videos">
+    <h2>Prévia do conteúdo</h2>
 
     <div class="video-box">
       <h3>Video😈🔥 1</h3>
       <video controls>
-        <source src="video1.mp4" type="video/mp4">
+        <source src="/video1.mp4" type="video/mp4">
       </video>
     </div>
 
     <div class="video-box">
       <h3>Video😈🔥 2</h3>
       <video controls>
-        <source src="video2.mp4" type="video/mp4">
+        <source src="/video2.mp4" type="video/mp4">
       </video>
     </div>
 
-    <div class="video-box">
-      <h3>Video😈🔥 3</h3>
-      <video controls>
-        <source src="video3.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <div class="video-box">
-      <h3>Video😈🔥 4</h3>
-      <video controls>
-        <source src="video4.mp4" type="video/mp4">
-      </video>
-    </div>
-
-    <div class="video-box">
-      <h3>Video😈🔥 5</h3>
-      <video controls>
-        <source src="video5.mp4" type="video/mp4">
-      </video>
-    </div>
   </div>
 
 </div>
-
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDXOXUIBXPxWVgqXZjxCnryoxuC3MTFbMk",
-  authDomain: "meu-site-c1c52.firebaseapp.com",
-  projectId: "meu-site-c1c52",
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-async function solicitar() {
-  const email = document.getElementById("email").value.trim();
-
-  if (!email) return alert("Digite seu email");
-
-  await setDoc(doc(db, "pendentes", email), {
-    pago: false
-  });
-
-  alert("Pagamento em análise...");
-}
-
-async function entrar() {
-  const email = document.getElementById("email").value.trim();
-
-  if (!email) return alert("Digite seu email");
-
-  const ref = doc(db, "usuarios", email);
-  const snap = await getDoc(ref);
-
-  if (snap.exists()) {
-    document.getElementById("conteudo").classList.remove("hidden");
-  } else {
-    alert("Acesso ainda não liberado");
-  }
-}
-
-window.solicitar = solicitar;
-window.entrar = entrar;
-</script>
 
 </body>
 </html>
