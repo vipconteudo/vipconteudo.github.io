@@ -1,2 +1,0 @@
-# vipconteudo.github.io
-site
