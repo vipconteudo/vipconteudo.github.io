@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conteúdo Premium</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #000000, #1a001a);
+      color: #fff;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 28px;
+      font-weight: bold;
+      color: #ff4da6;
+    }
+
+    .container {
+      margin-top: 40px;
+    }
+
+    .card {
+      background: #111;
+      padding: 25px;
+      border-radius: 20px;
+      width: 320px;
+      margin: auto;
+      box-shadow: 0 0 20px rgba(255, 77, 166, 0.5);
+    }
+
+    button {
+      background: #ff4da6;
+      border: none;
+      padding: 12px 20px;
+      color: white;
+      border-radius: 25px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #ff1a8c;
+      transform: scale(1.05);
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: none;
+      width: 85%;
+      margin-top: 10px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .aviso {
+      margin-top: 15px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 77, 166, 0.1);
+      border: 1px solid #ff4da6;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<header>🔥 Conteúdo Premium 🔥</header>
+
+<div class="container">
+
+  <div class="card">
+    <h2>Comprar Acesso</h2>
+    <p>💳 Pix: <b>danielpegoraro116@gmail.com</b></p>
+    <p>Após pagar, digite seu email abaixo</p>
+
+    <input id="email" placeholder="Digite seu email">
+
+    <button onclick="solicitar()">Já paguei</button>
+    <button onclick="entrar()">Entrar</button>
+
+    <div class="aviso">
+      ⏳ Após o pagamento, o acesso pode levar até <b>1 hora</b> para ser liberado.
+    </div>
+  </div>
+
+  <div id="conteudo" class="hidden">
+    <h2>🎉 Conteúdo Liberado!</h2>
+    <p>Bem-vindo ao conteúdo premium 🔥</p>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// 🔥 SEU FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyDXOXUIBXPxWVgqXZjxCnryoxuC3MTFbMk",
+  authDomain: "meu-site-c1c52.firebaseapp.com",
+  projectId: "meu-site-c1c52",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+// cliente avisa que pagou
+async function solicitar() {
+  const email = document.getElementById("email").value;
+
+  if (!email) return alert("Digite seu email");
+
+  await setDoc(doc(db, "pendentes", email), {
+    pago: false
+  });
+
+  alert("Pagamento em análise...");
+}
+
+// cliente tenta acessar
+async function entrar() {
+  const email = document.getElementById("email").value;
+
+  const ref = doc(db, "usuarios", email);
+  const snap = await getDoc(ref);
+
+  if (snap.exists()) {
+    document.getElementById("conteudo").classList.remove("hidden");
+  } else {
+    alert("Acesso ainda não liberado");
+  }
+}
+
+window.solicitar = solicitar;
+window.entrar = entrar;
+</script>
+
+</body>
+</html>
