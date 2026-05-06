@@ -1,131 +1,443 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Conteúdo Premium</title>
 
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #000000, #1a001a);
-      color: #fff;
-      text-align: center;
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+      background: #050005;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, rgba(255, 77, 166, 0.35), transparent 30%),
+        radial-gradient(circle at 80% 10%, rgba(255, 0, 128, 0.25), transparent 30%),
+        radial-gradient(circle at 50% 90%, rgba(180, 0, 255, 0.25), transparent 35%),
+        linear-gradient(135deg, #000, #170014 60%, #000);
+      z-index: -2;
+      animation: fundo 8s ease-in-out infinite alternate;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      z-index: -1;
+      mask-image: linear-gradient(to bottom, black, transparent);
+    }
+
+    @keyframes fundo {
+      from { filter: hue-rotate(0deg); transform: scale(1); }
+      to { filter: hue-rotate(15deg); transform: scale(1.04); }
     }
 
     header {
-      padding: 20px;
-      font-size: 28px;
-      font-weight: bold;
+      padding: 22px 8%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.35);
+      border-bottom: 1px solid rgba(255, 77, 166, 0.25);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 900;
       color: #ff4da6;
+      text-shadow: 0 0 18px rgba(255,77,166,0.8);
     }
 
-    .container {
-      margin-top: 60px;
+    .header-btn, .main-btn {
+      text-decoration: none;
+      display: inline-block;
+      color: white;
+      background: linear-gradient(135deg, #ff4da6, #ff007f);
+      padding: 13px 24px;
+      border-radius: 999px;
+      font-weight: 900;
+      box-shadow: 0 0 22px rgba(255, 77, 166, 0.55);
+      transition: 0.3s;
+      border: none;
     }
 
-    .card {
+    .header-btn:hover, .main-btn:hover {
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 0 35px rgba(255, 77, 166, 0.95);
+    }
+
+    .hero {
+      min-height: 78vh;
+      padding: 70px 8% 40px;
+      display: grid;
+      grid-template-columns: 1.1fr 380px;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-text {
+      animation: subir 0.9s ease forwards;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 9px 16px;
+      border-radius: 999px;
+      color: #ffb3da;
+      border: 1px solid rgba(255,77,166,0.65);
+      background: rgba(255,77,166,0.12);
+      margin-bottom: 20px;
+      box-shadow: 0 0 18px rgba(255,77,166,0.2);
+    }
+
+    h1 {
+      font-size: clamp(38px, 6vw, 68px);
+      line-height: 1.05;
+      margin-bottom: 18px;
+    }
+
+    h1 span {
+      color: #ff4da6;
+      text-shadow: 0 0 22px rgba(255,77,166,0.85);
+    }
+
+    .subtitle {
+      font-size: 19px;
+      color: #ddd;
+      line-height: 1.6;
+      max-width: 690px;
+      margin-bottom: 28px;
+    }
+
+    .price-card {
+      background: rgba(17, 17, 17, 0.82);
+      border: 1px solid rgba(255,77,166,0.5);
+      border-radius: 30px;
+      padding: 34px 28px;
+      text-align: center;
+      box-shadow: 0 0 35px rgba(255,77,166,0.38);
+      position: relative;
+      overflow: hidden;
+      animation: flutuar 3s ease-in-out infinite;
+    }
+
+    .price-card::before {
+      content: "";
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: conic-gradient(transparent, rgba(255,77,166,0.45), transparent 30%);
+      animation: girar 5s linear infinite;
+      z-index: 0;
+    }
+
+    .price-card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .price-card::after {
+      content: "";
+      position: absolute;
+      inset: 2px;
       background: #111;
-      padding: 30px;
-      border-radius: 25px;
-      width: 320px;
-      margin: auto;
-      box-shadow: 0 0 25px rgba(255, 77, 166, 0.5);
+      border-radius: 28px;
+      z-index: 0;
+    }
+
+    .price-card h2 {
+      color: #ff9bd0;
+      margin-bottom: 10px;
     }
 
     .price {
-      font-size: 36px;
       color: #ff4da6;
-      font-weight: bold;
-      margin: 15px 0;
+      font-size: 48px;
+      font-weight: 900;
+      margin: 14px 0;
+      text-shadow: 0 0 20px rgba(255,77,166,0.8);
     }
 
-    button {
-      background: #ff4da6;
-      border: none;
-      padding: 15px 30px;
-      color: white;
-      border-radius: 30px;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: bold;
+    .price-card p {
+      color: #ccc;
+      line-height: 1.5;
+      margin-bottom: 22px;
+    }
+
+    .mini {
+      margin-top: 14px;
+      color: #aaa;
+      font-size: 13px;
+    }
+
+    .benefits {
+      padding: 40px 8%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .benefit {
+      padding: 25px;
+      border-radius: 24px;
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,77,166,0.25);
+      box-shadow: 0 0 18px rgba(255,77,166,0.12);
       transition: 0.3s;
-      box-shadow: 0 0 15px rgba(255,77,166,0.6);
     }
 
-    button:hover {
-      background: #ff1a8c;
-      transform: scale(1.07);
+    .benefit:hover {
+      transform: translateY(-7px);
+      border-color: #ff4da6;
+      box-shadow: 0 0 28px rgba(255,77,166,0.35);
     }
 
-    .videos {
-      margin-top: 50px;
+    .benefit h3 {
+      color: #ff4da6;
+      margin-bottom: 10px;
+    }
+
+    .benefit p {
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    .preview {
+      padding: 50px 8%;
+      text-align: center;
+    }
+
+    .preview h2 {
+      font-size: 36px;
+      margin-bottom: 10px;
+    }
+
+    .preview p {
+      color: #ccc;
+      margin-bottom: 24px;
     }
 
     .video-box {
-      background: #111;
-      margin: 20px auto;
-      padding: 20px;
-      border-radius: 20px;
-      width: 90%;
-      max-width: 700px;
-      box-shadow: 0 0 20px rgba(255,77,166,0.4);
+      width: 92%;
+      max-width: 760px;
+      margin: 25px auto;
+      background: rgba(17,17,17,0.92);
+      border: 1px solid rgba(255,77,166,0.45);
+      border-radius: 28px;
+      padding: 22px;
+      box-shadow: 0 0 30px rgba(255,77,166,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .video-box h3 {
+      color: #ff4da6;
+      margin-bottom: 14px;
+      font-size: 24px;
     }
 
     video {
       width: 100%;
-      border-radius: 15px;
+      border-radius: 20px;
       background: #000;
+      box-shadow: 0 0 18px rgba(255,77,166,0.4);
     }
 
-    h3 {
-      color: #ff4da6;
+    .locked-list {
+      margin-top: 25px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
     }
 
-    .lock {
-      margin-top: 10px;
-      color: #aaa;
-      font-size: 14px;
+    .locked-card {
+      min-height: 115px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.055);
+      border: 1px solid rgba(255,77,166,0.25);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      filter: blur(0.2px);
+    }
+
+    .locked-card .icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .final-cta {
+      text-align: center;
+      padding: 55px 8%;
+      background: rgba(255,77,166,0.09);
+      border-top: 1px solid rgba(255,77,166,0.25);
+    }
+
+    .final-cta h2 {
+      font-size: 36px;
+      margin-bottom: 12px;
+    }
+
+    .final-cta p {
+      color: #ccc;
+      margin-bottom: 24px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 24px;
+      color: #777;
+      font-size: 13px;
+    }
+
+    @keyframes subir {
+      from { opacity: 0; transform: translateY(25px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes flutuar {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes girar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 850px) {
+      header {
+        padding: 18px 5%;
+      }
+
+      .logo {
+        font-size: 20px;
+      }
+
+      .header-btn {
+        padding: 10px 16px;
+        font-size: 14px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        padding: 45px 5% 25px;
+        text-align: center;
+      }
+
+      .benefits,
+      .locked-list {
+        grid-template-columns: 1fr;
+        padding-left: 5%;
+        padding-right: 5%;
+      }
     }
   </style>
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7674626887820174"
-     crossorigin="anonymous"></script>
 </head>
 <body>
 
-<header>🔥 Conteúdo Premium 🔥</header>
+<header>
+  <div class="logo">🔥 Conteúdo Premium</div>
+  <a class="header-btn" href="https://pay.kiwify.com.br/zog76UM" target="_blank">Comprar</a>
+</header>
 
-<div class="container">
-
-  <div class="card">
-    <h2>Acesso Premium</h2>
-    <p>Conteúdo exclusivo liberado após pagamento</p>
-
-    <div class="price">R$ 12,50</div>
-
-    <a href="https://pay.kiwify.com.br/zog76UM" target="_blank">
-      <button>🔥 Comprar Agora 🔥</button>
-    </a>
+<section class="hero">
+  <div class="hero-text">
+    <div class="badge">🔒 Área exclusiva • Acesso pela Kiwify</div>
+    <h1>Conteúdo <span>premium</span> liberado após a compra</h1>
+    <p class="subtitle">
+      Entre para a área exclusiva e tenha acesso aos vídeos completos. Pagamento seguro, rápido e com liberação automática pela Kiwify.
+    </p>
+    <a class="main-btn" href="https://pay.kiwify.com.br/zog76UM" target="_blank">🔥 Quero Acessar Agora</a>
   </div>
 
-  <div class="videos">
-    <h2>🎬 Prévia do conteúdo</h2>
+  <div class="price-card">
+    <h2>🔥 Oferta com desconto</h2>
+    <div style="color:#999; text-decoration:line-through; font-size:22px; margin-bottom:6px;">De R$30,00</div>
+    <div class="price">R$12,50</div>
+    <p>Pagamento único para acessar a área premium com todo o conteúdo disponível após a compra.</p>
+    <a class="main-btn" href="https://pay.kiwify.com.br/zog76UM" target="_blank">Comprar Agora</a>
+    <div class="mini">Pix automático • Cartão • Acesso rápido</div>
+  </div>
+</section>
 
-    <div class="video-box">
-      <h3>Video😈🔥 (Prévia)</h3>
+<section class="benefits">
+  <div class="benefit">
+    <h3>⚡ Acesso rápido</h3>
+    <p>Após o pagamento aprovado, a Kiwify libera o acesso automaticamente no email do comprador.</p>
+  </div>
 
-      <video controls>
-        <source src="/video1.mp4" type="video/mp4">
-      </video>
+  <div class="benefit">
+    <h3>💳 Compra segura</h3>
+    <p>Seu pagamento é processado em uma plataforma confiável, com Pix e cartão disponíveis.</p>
+  </div>
 
-      <p class="lock">
-        🔒 O restante do conteúdo é liberado somente após a compra
-      </p>
+  <div class="benefit">
+    <h3>🎬 Área exclusiva</h3>
+    <p>Os vídeos completos ficam protegidos dentro da área de membros para quem comprar.</p>
+  </div>
+</section>
+
+<section class="preview">
+  <h2>🎬 Prévia do conteúdo</h2>
+  <p>Assista uma prévia. O restante fica bloqueado e é liberado somente após a compra.</p>
+
+  <div class="video-box">
+    <h3>Video😈🔥 Prévia</h3>
+    <video controls>
+     <source src="video1.mp4" type="video/mp4">
+      Seu navegador não suporta vídeo.
+    </video>
+  </div>
+
+  <div class="locked-list">
+    <div class="locked-card">
+      <div class="icon">🔒</div>
+      <strong>Video😈🔥 2</strong>
+    </div>
+    <div class="locked-card">
+      <div class="icon">🔒</div>
+      <strong>Video😈🔥 3</strong>
+    </div>
+    <div class="locked-card">
+      <div class="icon">🔒</div>
+      <strong>Conteúdo extra</strong>
     </div>
   </div>
+</section>
 
-</div>
+<section class="final-cta">
+  <h2>Pronto para liberar tudo?</h2>
+  <p>Clique abaixo e finalize sua compra com segurança pela Kiwify.</p>
+  <a class="main-btn" href="https://pay.kiwify.com.br/zog76UM" target="_blank">💎 Garantir meu acesso</a>
+</section>
+
+<footer>
+  © 2026 Conteúdo Premium • Pagamento processado pela Kiwify
+</footer>
 
 </body>
 </html>
